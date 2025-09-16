@@ -1,8 +1,10 @@
-import React from 'react'
+import { useUser } from '../../hooks/useUser'
 
 const HomePage = () => {
+  const { user } = useUser();
+
   return (
-    <div>HomePage</div>
+    <div>Welcome, { user?.name || "Guest" }</div>
   )
 }
 

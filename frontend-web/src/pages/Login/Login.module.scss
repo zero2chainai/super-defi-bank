@@ -1,0 +1,25 @@
+@use '../../styles/global' as *;
+
+.loginContainer {
+    height: 100%;
+    @include flex-center($direction: column);
+    gap: 15px;
+}
+
+.loginInfo {
+    font-size: 3rem;
+    font-family: "Open Sans", sans-serif;
+}
+
+.walletBtn {
+    background-color: rgb(74, 74, 228);
+    border-radius: 4px;
+    @include padding((top: 0.8rem, bottom: 0.8rem, left: 1.3rem, right: 1.3rem));
+    color: white;
+    font-size: 1.5rem;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background-color: blue;
+    }
+}

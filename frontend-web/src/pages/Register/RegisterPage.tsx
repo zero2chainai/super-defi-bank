@@ -3,10 +3,20 @@ import FormInput from "../../components/FormInput";
 import { EmptyUser, type User } from "../../types/user";
 import styles from "./RegisterPage.module.scss";
 import api from "../../api/axios";
+import { useUser } from "../../hooks/useUser";
+import { Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
   const [user, setUser] = useState<Omit<User, "_id">>(EmptyUser);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { login, isLoggedIn } = useUser();
+  const navigate = useNavigate();
+
+  if (isLoggedIn) {
+    return <Navigate to="/" replace />
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -14,6 +24,7 @@ const RegisterPage = () => {
   };
 
   const connectWallet = async () => {
+    setLoading(true);
     if (window.ethereum) {
       try {
         const accounts = await window.ethereum.request({
@@ -26,26 +37,29 @@ const RegisterPage = () => {
         setIsWalletConnected(false);
       }
     } else {
-      console.log("Please install MetaMask in the browser");
+      toast.error("Please install MetaMask");
       setIsWalletConnected(false);
     }
+    setLoading(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user.name.trim()) {
-      alert("Please fill in all the fields");
+      toast.error("Fill all the require fields");
       return;
     }
     if (!user.walletAddress) {
-      alert("Please connect your wallet");
+      toast.error("Please connect your wallet");
       return;
     }
     try {
-      const response = await api.post("users/register", user);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
+      const { data } = await api.post("users/register", user);
+      login(data.data);
+      toast.success(data.message);
+      navigate("/");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -67,7 +81,7 @@ const RegisterPage = () => {
             type="button"
             onClick={connectWallet}
           >
-            { isWalletConnected ? "Connected" : "Connect Wallet" }
+            { isWalletConnected ? "Connected" : loading ? "Connecting..." : "Connect Wallet" }
           </button>
         </div>
         <button className={styles.btn}>Submit</button>
