@@ -2,7 +2,7 @@ import { useState } from "react";
 import FormInput from "../../components/FormInput";
 import { EmptyUser, type User } from "../../types/user";
 import styles from "./RegisterPage.module.scss";
-import axios from "axios";
+import api from "../../api/axios";
 
 const RegisterPage = () => {
   const [user, setUser] = useState<Omit<User, "_id">>(EmptyUser);
@@ -42,11 +42,7 @@ const RegisterPage = () => {
       return;
     }
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/users/register",
-        user,
-        { withCredentials: true }
-      );
+      const response = await api.post("users/register", user);
       console.log(response.data);
     } catch (error) {
       console.log(error);
