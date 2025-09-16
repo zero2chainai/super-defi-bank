@@ -1,0 +1,29 @@
+@use '../../styles/global' as *;
+
+.inputWrapper {
+    @include flex-center(column);
+    gap: 8px;
+    align-items: flex-start;
+    width: 100%;
+
+    .label {
+        font-family: "Open Sans", sans-serif;
+        font-size: 1.1rem;
+        font-weight: bold;
+        width: 100%;
+    }
+
+    .input {
+        border-radius: 8px;
+        width: 100%;
+        padding: 8px 12px;
+        font-family: "Open Sans", sans-serif;
+        font-size: 1.1rem;
+        transition: border 0.1s ease-in-out;
+        border: 1px solid gray;
+
+        &:focus {
+            border: 2px solid black;
+        }
+    }
+}

@@ -1,0 +1,24 @@
+@use '../../styles/global' as *;
+
+.navbarContainer {
+    height: 90px;
+    background-color: antiquewhite;
+    width: 100%;
+    font-family: "Roboto", sans-serif;
+
+    @include padding((left: 3rem, right: 3rem));
+    @include flex-between();
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    user-select: none;
+}
+
+.links {
+    @include flex-center();
+    gap: 20px;
+    font-size: 1.2rem;
+    font-weight: semi-bold;
+}

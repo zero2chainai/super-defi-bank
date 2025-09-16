@@ -1,0 +1,53 @@
+@mixin flex-center($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin margin($map: (all: 0)) {
+  @each $side, $value in $map {
+    @if $side ==all {
+      margin: $value;
+    }
+
+    @else {
+      margin-#{$side}: $value;
+    }
+  }
+}
+
+@mixin padding($map: (all: 0)) {
+  @each $side, $value in $map {
+    @if $side ==all {
+      padding: $value;
+    }
+
+    @else {
+      padding-#{$side}: $value;
+    }
+  }
+}
+
+@mixin primary-btn() {
+  background-color: rgb(68, 68, 68);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+  font-family: "Robot", sans-serif;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: black;
+    transform: translateY(-2px);
+  }
+}
