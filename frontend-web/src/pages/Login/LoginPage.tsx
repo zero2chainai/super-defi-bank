@@ -5,6 +5,7 @@ import api from "../../api/axios";
 import { toast } from "react-toastify";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
+import { useWalletConnect } from "../../hooks/useWalletConnect";
 
 const LoginPage = () => {
   const [user, setUser] = useState<Omit<User, "_id">>(EmptyUser);
@@ -12,10 +13,21 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login, isLoggedIn } = useUser();
+  const { account, connectWallet } = useWalletConnect();
 
   if (isLoggedIn) {
     return <Navigate to="/" replace />;
   }
+
+  useEffect(() => {
+    if (account) {
+      setUser({ ...user, walletAddress: account });
+      setIsWalletConnected(true);
+    } else {
+      setUser({ ...user, walletAddress: "" });
+      setIsWalletConnected(false);
+    }
+  }, [account]);
 
   useEffect(() => {
     const handleLogin = async () => {
@@ -40,7 +52,7 @@ const LoginPage = () => {
     }
   }, [isWalletConnected]);
 
-  const connectWallet = async () => {
+  const handleWalletConnect = async () => {
     setLoading(true);
     if (window.ethereum) {
       try {
@@ -54,7 +66,7 @@ const LoginPage = () => {
         setIsWalletConnected(false);
       }
     } else {
-      toast.error("Please install MetaMask");
+      await connectWallet();
     }
     setLoading(false);
   };
@@ -62,7 +74,7 @@ const LoginPage = () => {
   return (
     <div className={styles.loginContainer}>
       <h3 className={styles.loginInfo}>Connect to wallet for login</h3>
-      <button className={styles.walletBtn} onClick={connectWallet}>
+      <button className={styles.walletBtn} onClick={handleWalletConnect}>
         {loading ? "Connecting..." : "Connect Wallet"}
       </button>
     </div>

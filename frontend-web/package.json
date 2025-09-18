@@ -11,6 +11,11 @@
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
+    "@walletconnect/modal": "^2.7.0",
+    "@walletconnect/qrcode-modal": "^1.8.0",
+    "@walletconnect/sign-client": "^2.21.9",
+    "@walletconnect/types": "^2.21.9",
+    "@walletconnect/web3-provider": "^1.8.0",
     "axios": "^1.12.2",
     "ethers": "^6.15.0",
     "react": "^19.1.1",

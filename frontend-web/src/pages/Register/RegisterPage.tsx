@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormInput from "../../components/FormInput";
 import { EmptyUser, type User } from "../../types/user";
 import styles from "./RegisterPage.module.scss";
@@ -6,6 +6,7 @@ import api from "../../api/axios";
 import { useUser } from "../../hooks/useUser";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useWalletConnect } from "../../hooks/useWalletConnect";
 
 const RegisterPage = () => {
   const [user, setUser] = useState<Omit<User, "_id">>(EmptyUser);
@@ -13,17 +14,28 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const { login, isLoggedIn } = useUser();
   const navigate = useNavigate();
+  const { account, connectWallet } = useWalletConnect();
 
   if (isLoggedIn) {
-    return <Navigate to="/" replace />
+    return <Navigate to="/" replace />;
   }
 
+  useEffect(() => {
+    if (account) {
+      setUser({ ...user, walletAddress: account });
+      setIsWalletConnected(true);
+    } else {
+      setUser({ ...user, walletAddress: "" });
+      setIsWalletConnected(false);
+    }
+  }, [account]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; 
     setUser({ ...user, [name]: value });
   };
 
-  const connectWallet = async () => {
+  const handleWalletClick = async () => {
     setLoading(true);
     if (window.ethereum) {
       try {
@@ -37,8 +49,8 @@ const RegisterPage = () => {
         setIsWalletConnected(false);
       }
     } else {
-      toast.error("Please install MetaMask");
-      setIsWalletConnected(false);
+      await connectWallet();
+      console.log("Account: ", account);
     }
     setLoading(false);
   };
@@ -79,9 +91,13 @@ const RegisterPage = () => {
           <button
             className={styles.walletBtn}
             type="button"
-            onClick={connectWallet}
+            onClick={handleWalletClick}
           >
-            { isWalletConnected ? "Connected" : loading ? "Connecting..." : "Connect Wallet" }
+            {isWalletConnected
+              ? "Connected"
+              : loading
+              ? "Connecting..."
+              : "Connect Wallet"}
           </button>
         </div>
         <button className={styles.btn}>Submit</button>
