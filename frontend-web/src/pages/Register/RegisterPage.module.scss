@@ -1,0 +1,43 @@
+@use '../../styles/global' as *;
+
+.formContainer {
+    height: 100%;
+    @include flex-center();
+}
+
+.registerForm {
+    box-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.3),
+        -2px -2px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    max-width: 30rem;
+    min-width: 30rem;
+    @include flex-center(column);
+    gap: 20px;
+    @include padding((all: 2rem));
+
+    .heading {
+        @include padding((bottom: 10px));
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid gray;
+    }
+}
+
+.btn {
+    @include primary-btn();
+}
+
+.walletBtnContainer {
+    width: 100%;
+    text-align: left;
+
+    .walletBtn {
+        font-size: 1.1rem;
+        color: blue;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

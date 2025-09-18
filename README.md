@@ -60,4 +60,4 @@
 > Soon updated
 
 ## API Endpoints ("/api")
-> Soon updated
+> /users/register - For registering user

@@ -1,0 +1,32 @@
+@use './variables' as *;
+@forward './variables';
+
+@use './mixins' as *;
+@forward './mixins';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+input {
+    border: none;
+    outline: none;
+}
