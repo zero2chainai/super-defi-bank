@@ -1,0 +1,21 @@
+@use '../../styles/global' as *;
+
+.homeContainer {
+    text-align: center;
+    @include padding((top: 5rem));
+}
+
+.section {
+    @include margin((top: 10px));
+    @include flex-between($direction: column);
+    gap: 20px;
+
+    .deposit {
+        @include primary-btn();
+    }
+
+    .withdraw {
+        @include secondary-btn();
+        margin-left: 10px;
+    }
+}
