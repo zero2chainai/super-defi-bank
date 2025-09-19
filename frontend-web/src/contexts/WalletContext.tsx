@@ -9,7 +9,7 @@ export const WalletContext = createContext<any>(null);
 
 export const WalletProvider = ({ children }: { children: React.ReactNode }) => {
   const [wcProvider, setWcProvider] = useState<any>(null);
-  const [provider, setProvider] = useState<ethers.Provider | null>(null);
+  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
   const [account, setAccount] = useState<string | null>(null);
   const { isLoggedIn, loading } = useUser();
 

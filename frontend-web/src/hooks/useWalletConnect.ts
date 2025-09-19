@@ -5,7 +5,7 @@ const PROJECT_ID = "104ce761ed46b94e3327f282c15dfd0c";
 const SUPPORTED_CHAIN = 31337;
 
 export const useWalletConnect = async () => {
-  let provider: ethers.Provider | null = null,
+  let provider: ethers.BrowserProvider | null = null,
     account: string | null = null,
     wcProvider: any = null;
 
