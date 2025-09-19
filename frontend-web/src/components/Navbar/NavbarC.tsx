@@ -3,9 +3,11 @@ import api from "../../api/axios";
 import { useUser } from "../../hooks/useUser";
 import styles from "./NavbarC.module.scss";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useWallet } from "../../contexts/WalletContext";
 
 const NavbarC = () => {
   const { isLoggedIn, logout } = useUser();
+  const { disconnectWallet } = useWallet();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -13,6 +15,7 @@ const NavbarC = () => {
       const response = await api.post("/users/logout");
       toast.success(response.data.message);
       logout();
+      disconnectWallet();
       navigate("/");
     } catch (error: any) {
       toast.error(error.response?.data?.message);

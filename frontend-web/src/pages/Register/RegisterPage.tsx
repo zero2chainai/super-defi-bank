@@ -6,7 +6,7 @@ import api from "../../api/axios";
 import { useUser } from "../../hooks/useUser";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useWalletConnect } from "../../hooks/useWalletConnect";
+import { useWallet } from "../../contexts/WalletContext";
 
 const RegisterPage = () => {
   const [user, setUser] = useState<Omit<User, "_id">>(EmptyUser);
@@ -14,7 +14,7 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const { login, isLoggedIn } = useUser();
   const navigate = useNavigate();
-  const { account, connectWallet } = useWalletConnect();
+  const { account, connectWallet } = useWallet();
 
   if (isLoggedIn) {
     return <Navigate to="/" replace />;
@@ -31,26 +31,21 @@ const RegisterPage = () => {
   }, [account]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target; 
+    const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
   const handleWalletClick = async () => {
     setLoading(true);
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        setUser({ ...user, walletAddress: accounts[0] });
-        setIsWalletConnected(true);
-      } catch (error) {
-        console.log(error);
-        setIsWalletConnected(false);
-      }
-    } else {
+    try {
       await connectWallet();
-      console.log("Account: ", account);
+      if (account) {
+        setUser({ ...user, walletAddress: account });
+        setIsWalletConnected(true);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsWalletConnected(false);
     }
     setLoading(false);
   };

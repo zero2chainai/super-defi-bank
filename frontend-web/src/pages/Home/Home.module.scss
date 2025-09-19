@@ -11,10 +11,15 @@
     gap: 20px;
 
     .deposit {
-        @include primary-btn();
+        @include secondary-btn();
     }
 
     .withdraw {
+        @include secondary-btn();
+        margin-left: 10px;
+    }
+
+    .getBalance {
         @include secondary-btn();
         margin-left: 10px;
     }

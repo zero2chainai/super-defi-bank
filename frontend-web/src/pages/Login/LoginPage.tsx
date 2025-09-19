@@ -5,39 +5,33 @@ import api from "../../api/axios";
 import { toast } from "react-toastify";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
-import { useWalletConnect } from "../../hooks/useWalletConnect";
+import { useWallet } from "../../contexts/WalletContext";
 
 const LoginPage = () => {
   const [user, setUser] = useState<Omit<User, "_id">>(EmptyUser);
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login, isLoggedIn } = useUser();
-  const { account, connectWallet } = useWalletConnect();
+  const { account, connectWallet } = useWallet();
 
   if (isLoggedIn) {
     return <Navigate to="/" replace />;
   }
 
   useEffect(() => {
-    if (account) {
-      setUser({ ...user, walletAddress: account });
-      setIsWalletConnected(true);
-    } else {
+    if (!account) {
       setUser({ ...user, walletAddress: "" });
-      setIsWalletConnected(false);
+      return;
     }
-  }, [account]);
 
-  useEffect(() => {
+    setUser({ ...user, walletAddress: account });
+
     const handleLogin = async () => {
-      if (!user.walletAddress) {
-        toast.error("Please connect your wallet");
-        return;
-      }
-
       try {
-        const { data } = await api.post("/users/login", user);
+        const { data } = await api.post("/users/login", {
+          ...user,
+          walletAddress: account,
+        });
         toast.success(data.message);
         login(data.data);
         navigate("/");
@@ -47,26 +41,15 @@ const LoginPage = () => {
       }
     };
 
-    if (isWalletConnected) {
-      handleLogin();
-    }
-  }, [isWalletConnected]);
+    handleLogin();
+  }, [account]);
 
   const handleWalletConnect = async () => {
     setLoading(true);
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        setUser({ ...user, walletAddress: accounts[0] });
-        setIsWalletConnected(true);
-      } catch (error) {
-        console.log(error);
-        setIsWalletConnected(false);
-      }
-    } else {
+    try {
       await connectWallet();
+    } catch (error) {
+      console.log("Error connecting wallet: ", error);
     }
     setLoading(false);
   };

@@ -1,96 +1,61 @@
-import SignClient from "@walletconnect/sign-client";
-import { WalletConnectModal } from "@walletconnect/modal";
+import EthereumProvider from "@walletconnect/ethereum-provider";
 import { ethers } from "ethers";
-import { useEffect, useState } from "react";
-import type { SessionTypes } from "@walletconnect/types";
 
-const projectId = "104ce761ed46b94e3327f282c15dfd0c";
+const PROJECT_ID = "104ce761ed46b94e3327f282c15dfd0c";
+const SUPPORTED_CHAIN = 31337;
 
-export const useWalletConnect = () => {
-  const [client, setClient] = useState<SignClient | null>(null);
-  const [session, setSession] = useState<SessionTypes.Struct | null>(null);
-  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
-  const [account, setAccount] = useState<string | null>(null);
+export const useWalletConnect = async () => {
+  let provider: ethers.Provider | null = null,
+    account: string | null = null,
+    wcProvider: any = null;
 
-  // Initialize the SignClient
-  useEffect(() => {
-    const initClient = async () => {
-      try {
-        const signClient = await SignClient.init({
-          projectId,
-          relayUrl: "wss://relay.walletconnect.com",
-        });
+  try {
+    const ethProvider = await EthereumProvider.init({
+      projectId: PROJECT_ID,
+      chains: [SUPPORTED_CHAIN],
+      optionalChains: [],
+      rpcMap: {
+        [SUPPORTED_CHAIN]: "http://127.0.0.1:8545",
+      },
+      showQrModal: true,
+      methods: [
+        "eth_sendTransaction",
+        "personal_sign",
+        "eth_signTypedData",
+        "eth_signTransaction",
+      ],
+      events: ["chainChanged", "accountsChanged"],
+    });
 
-        setClient(signClient);
-      } catch (error) {
-        console.log("SignClient initialization error: ", error);
-      }
-    };
-    initClient();
-  }, []);
+    if (ethProvider) {
+      wcProvider = ethProvider;
 
-  const connectWallet = async () => {
-    if (!client) return;
-
-    try {
-      // Client connection
-      const { uri, approval } = await client.connect({
-        requiredNamespaces: {
-          eip155: {
-            chains: ["eip155:1"],
-            methods: [
-              "eth_signTransaction",
-              "personal_sign",
-              "eth_signTypedData",
-            ],
-            events: ["chainChanged", "accountsChanged"],
-          },
-        },
-      });
-
-      const modal = new WalletConnectModal({
-        projectId,
-      });
-
-      // Show QR if needed
-      if (uri) {
-        await modal.openModal({ uri });
-      }
-
-      // Wait for user to approve the connection
-      const session = await approval();
-      modal.closeModal();
-
-      const userAccount = session.namespaces.eip155.accounts[0].split(":")[2];
-      setSession(session);
-      setAccount(userAccount);
-
-      // Create ethers provider using the connected wallet
-      const wcProvider = new ethers.BrowserProvider({
-        request: (args: any) =>
-          client.request({
-            topic: session.topic,
-            chainId: "eip155:1",
-            request: args,
-          }),
-      } as any);
-
-      setProvider(wcProvider);
-
-      client.on("session_event", ({ params: { event, chainId } }) => {
-        if (event.name === "accountsChanged") {
-          const accounts: string[] = event.data;
-          setAccount(accounts[0].split(":")[2]);
-        }
-
-        if (event.name === "chainChanged") {
-          console.log("Chain changed:", chainId, event.data);
+      ethProvider.on("accountsChanged", (accounts: string[]) => {
+        if (accounts?.length > 0) {
+          account = accounts[0];
         }
       });
-    } catch (error) {
-      console.log("WalletConnect connection error: ", error);
+
+      ethProvider.on("session_update", (event: any) => {
+        console.log("WalletConnect session update:", event);
+      });
+
+      ethProvider.on("chainChanged", async (chainId: string) => {
+        console.log("Chain changed: ", chainId);
+        provider = new ethers.BrowserProvider(ethProvider);
+      });
+
+      const accounts = await ethProvider.enable();
+      if (accounts?.length > 0) {
+        account = accounts[0];
+        provider = new ethers.BrowserProvider(ethProvider);
+      }
+    } else {
+      console.log("No walletconnect provider found");
     }
-  };
-  
-  return { client, session, provider, account, connectWallet };
+  } catch (error) {
+    console.log("WalletConnect Error: ", error);
+  }
+
+  return { provider, account, wcProvider };
 };

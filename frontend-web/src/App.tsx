@@ -3,11 +3,11 @@ import AppRoutes from "./routes/AppRoutes";
 import styles from "./App.module.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { getCurrentUser } from "./utils/getCurrentUser";
 import Loader from "./components/Loader";
+import { useUser } from "./hooks/useUser";
 
 function App() {
-  const loading = getCurrentUser();
+  const { loading } = useUser();
 
   if (loading) return <Loader text="Loading..."/>
   
