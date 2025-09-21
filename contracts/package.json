@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "hardhat-server": "npx hardhat node --hostname 0.0.0.0 --port 8545",
+    "start": "npm run hardhat-server"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "@nomicfoundation/hardhat-verify": "^2.1.1",
     "@typechain/ethers-v6": "^0.5.1",
     "@typechain/hardhat": "^9.1.0",
+    "axios": "^1.12.2",
     "chai": "^4.5.0",
     "ethers": "^6.15.0",
     "hardhat": "^2.26.3",

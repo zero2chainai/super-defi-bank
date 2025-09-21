@@ -15,7 +15,7 @@ export const useWalletConnect = async () => {
       chains: [SUPPORTED_CHAIN],
       optionalChains: [],
       rpcMap: {
-        [SUPPORTED_CHAIN]: "http://127.0.0.1:8545",
+        [SUPPORTED_CHAIN]: "https://dayton-flex-owns-activities.trycloudflare.com"
       },
       showQrModal: true,
       methods: [

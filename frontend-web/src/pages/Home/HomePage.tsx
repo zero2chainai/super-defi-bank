@@ -16,7 +16,7 @@ const HomePage = () => {
       </h1>
       {isLoggedIn ? (
         <section className={styles.section}>
-          <p className={styles.balance}>Current balance: {user?.balance}</p>
+          <p className={styles.balance}>Current balance: {user?.bankTokens}</p>
           <div className={styles.controls}>
             <button
               className={styles.deposit}

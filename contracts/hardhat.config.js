@@ -8,7 +8,7 @@ module.exports = {
       chainId: 31337,
     },
     localhost: {
-      url: "http://127.0.0.1:8545",
+      url: "https://dayton-flex-owns-activities.trycloudflare.com",
       chainId: 31337,
     },
   },

@@ -9,9 +9,12 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    balance: {
-        type: String,
-        default: "100"
+    bankTokens: {
+        type: Number,
+        default: 10
+    },
+    depositedTokens: {
+        type: Number
     }
 }, { timestamps: true });
 

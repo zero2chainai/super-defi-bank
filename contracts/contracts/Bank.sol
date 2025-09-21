@@ -26,7 +26,7 @@ contract Bank is Ownable, Pausable, ReentrancyGuard {
     /* ========== EVENTS ========== */
     event Deposit(address indexed from, uint256 amount);
     event Withdraw(address indexed from, uint256 amount);
-    event TransferInternal(address indexed from, address indexed to, uint256 amount);
+    event Transfer(address indexed from, address indexed to, uint256 amount);
     event EmergencyWithdraw(address indexed owner, uint256 amount);
     event ERC20Rescued(address indexed token, address indexed to, uint256 amount);
 
@@ -99,7 +99,7 @@ contract Bank is Ownable, Pausable, ReentrancyGuard {
         }
         balances[to] += amount;
 
-        emit TransferInternal(msg.sender, to, amount);
+        emit Transfer(msg.sender, to, amount);
     }
 
     /* ========== VIEW HELPERS ========== */
