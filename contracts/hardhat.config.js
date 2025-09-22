@@ -1,4 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
+const { url } = require("./localhost_url.json")
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -8,7 +9,7 @@ module.exports = {
       chainId: 31337,
     },
     localhost: {
-      url: "https://dayton-flex-owns-activities.trycloudflare.com",
+      url: url,
       chainId: 31337,
     },
   },

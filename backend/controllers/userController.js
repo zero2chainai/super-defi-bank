@@ -67,7 +67,7 @@ const logoutUser = async (req, res, next) => {
 }
 
 const loginUser = async (req, res, next) => {
-    const { name, walletAddress } = req.body;
+    const { walletAddress } = req.body;
 
     if (!walletAddress.trim()) {
         return next(new AppError("Please connect your wallet", 400));

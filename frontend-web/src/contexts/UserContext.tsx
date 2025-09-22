@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 interface UserContextProps {
   user: User | null;
   setCurrentUser: (user: User) => void;
+  updateUser: (updates: Partial<User>) => void;
   login: (user: User) => void;
   logout: () => void;
   isLoggedIn: boolean;
@@ -19,7 +20,6 @@ export const UserContext = createContext<UserContextProps | undefined>(
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -28,9 +28,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const { data } = await api.get("/users/me");
         setCurrentUser(data.data);
-        setLoading(false);
       } catch (error: any) {
-        toast.error(error.reponse?.data?.message || "Something went wrong");
+        toast.error(error.response?.data?.message || "Something went wrong");
+      } finally {
         setLoading(false);
       }
     };
@@ -38,15 +38,16 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     fetchUser();
   }, []);
 
+  const updateUser = (updates: Partial<User>) => {
+    setUser((prev) => (prev ? { ...prev, ...updates } : prev));
+  };
+
   const setCurrentUser = (user: User) => {
     setUser(user);
     setIsLoggedIn(true);
   };
 
-  const login = (user: User) => {
-    setUser(user);
-    setIsLoggedIn(true);
-  };
+  const login = (user: User) => setCurrentUser(user);
 
   const logout = () => {
     setUser(null);
@@ -55,7 +56,15 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, login, logout, setCurrentUser, isLoggedIn, loading }}
+      value={{
+        user,
+        login,
+        logout,
+        setCurrentUser,
+        updateUser,
+        isLoggedIn,
+        loading,
+      }}
     >
       {children}
     </UserContext.Provider>

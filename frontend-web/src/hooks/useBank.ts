@@ -44,13 +44,13 @@ export const useBank = () => {
     }
   };
 
-  const withdraw = async () => {
+  const withdraw = async (token: string) => {
     try {
       const bankObj = await getBank(provider);
       if (!bankObj) return;
       const { bank } = bankObj;
 
-      const tx = await bank.withdraw(ethers.parseEther("0.5"));
+      const tx = await bank.withdraw(ethers.parseEther(token));
       const receipt = await tx.wait();
       return {
         success: true,

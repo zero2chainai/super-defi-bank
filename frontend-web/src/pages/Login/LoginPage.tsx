@@ -28,8 +28,8 @@ const LoginPage = () => {
 
     const handleLogin = async () => {
       try {
+        console.log(account);
         const { data } = await api.post("/users/login", {
-          ...user,
           walletAddress: account,
         });
         toast.success(data.message);

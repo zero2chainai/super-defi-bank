@@ -1,5 +1,6 @@
 import EthereumProvider from "@walletconnect/ethereum-provider";
 import { ethers } from "ethers";
+import { url } from '../rpcUrl.json';
 
 const PROJECT_ID = "104ce761ed46b94e3327f282c15dfd0c";
 const SUPPORTED_CHAIN = 31337;
@@ -15,7 +16,7 @@ export const useWalletConnect = async () => {
       chains: [SUPPORTED_CHAIN],
       optionalChains: [],
       rpcMap: {
-        [SUPPORTED_CHAIN]: "https://dayton-flex-owns-activities.trycloudflare.com"
+        [SUPPORTED_CHAIN]: url
       },
       showQrModal: true,
       methods: [

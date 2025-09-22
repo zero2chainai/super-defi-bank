@@ -2,13 +2,13 @@ export interface User {
     _id: string,
     name: string,
     walletAddress: string,
-    bankTokens: string,
-    depositedTokens: string
+    bankTokens: Number,
+    depositedTokens: Number
 }
 
 export const EmptyUser: Omit<User, "_id"> = {
     name: "",
     walletAddress: "",
-    bankTokens: "",
-    depositedTokens: ""
+    bankTokens: 0,
+    depositedTokens: 0
 }
