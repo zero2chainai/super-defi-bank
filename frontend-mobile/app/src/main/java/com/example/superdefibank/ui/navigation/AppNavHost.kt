@@ -9,6 +9,7 @@ import com.example.superdefibank.ui.screens.home.HomeScreen
 import com.example.superdefibank.ui.screens.login.LoginScreen
 import com.example.superdefibank.ui.screens.register.RegisterScreen
 import com.example.superdefibank.viewmodel.AuthViewModel
+import com.example.superdefibank.viewmodel.BankViewModel
 import com.example.superdefibank.viewmodel.WalletViewModel
 
 @Composable
@@ -16,10 +17,11 @@ fun AppNavHost() {
     val navHostController = rememberNavController()
     val walletViewModel: WalletViewModel = hiltViewModel()
     val authViewModel: AuthViewModel = hiltViewModel()
+    val bankViewModel: BankViewModel = hiltViewModel()
 
     NavHost(navController = navHostController, startDestination = Routes.Login.route) {
         composable(Routes.Home.route) {
-            HomeScreen()
+            HomeScreen(authViewModel, bankViewModel)
         }
         composable(Routes.Login.route) {
             LoginScreen(navHostController, walletViewModel, authViewModel)

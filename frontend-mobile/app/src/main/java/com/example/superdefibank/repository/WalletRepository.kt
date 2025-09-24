@@ -11,6 +11,8 @@ class WalletRepository {
     private val _walletAddress = MutableLiveData<String?>()
     val walletAddress: LiveData<String?> = _walletAddress
 
+    var activeSessionTopic: String? = null
+
     fun connectWallet(onUriReady: (String?) -> Unit) {
         // Connect to wallet and the URI
         val pairing = CoreClient.Pairing.create() ?: return
@@ -43,6 +45,7 @@ class WalletRepository {
                 val accounts = approvedSession.namespaces["eip155"]?.accounts
                 val walletAddress = accounts?.firstOrNull()?.split(":")?.get(2)
 
+                activeSessionTopic = approvedSession.topic
                 _walletAddress.postValue(walletAddress)
                 Timber.i("Session approved: $approvedSession")
                 Timber.i("Wallet address: $walletAddress")

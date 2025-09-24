@@ -1,6 +1,7 @@
 package com.example.superdefibank.di
 
 import com.example.superdefibank.repository.AuthRepository
+import com.example.superdefibank.repository.BankRepository
 import com.example.superdefibank.repository.WalletRepository
 import dagger.Module
 import dagger.Provides
@@ -22,5 +23,11 @@ object AppModule {
     @Singleton
     fun provideAuthRepository(): AuthRepository {
         return AuthRepository()
+    }
+
+    @Provides
+    @Singleton
+    fun provideBankRepository(walletRepository: WalletRepository): BankRepository {
+        return BankRepository(walletRepository)
     }
 }

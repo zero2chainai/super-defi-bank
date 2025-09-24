@@ -21,6 +21,7 @@ class AuthViewModel @Inject constructor(
     val authUiState: StateFlow<AuthUiState> = _authUiState
 
     fun register(name: String, walletAddress: String) {
+        Timber.d("--------- Register Started ----------")
         viewModelScope.launch {
             _authUiState.value = _authUiState.value.copy(state = AuthState.Loading)
             try {
@@ -29,14 +30,15 @@ class AuthViewModel @Inject constructor(
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null && body.success) {
+                        Timber.d("Registration Successful: ${body.data}")
                         _authUiState.value = _authUiState.value.copy(
                             state = AuthState.success(body.message),
-                            User = body.data
+                            user = body.data
                         )
                     }
                 } else {
                     val errorJson = response.errorBody()?.string()
-                    Timber.e("Error JSON: $errorJson")
+                    Timber.e("Unsuccessful Registration Request: $errorJson")
                     val errorMsg = try {
                         val json = JSONObject(errorJson ?: "")
                         json.getString("message")
@@ -48,12 +50,14 @@ class AuthViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
-                Timber.e("Error: ${e.message}")
+                Timber.e("Registration Failed: ${e.message}")
             }
         }
+        Timber.d("--------- Register Ended ----------")
     }
 
     fun login(walletAddress: String) {
+        Timber.d("--------- Login Started ----------")
         viewModelScope.launch {
             _authUiState.value = _authUiState.value.copy(state = AuthState.Loading)
             try {
@@ -62,14 +66,15 @@ class AuthViewModel @Inject constructor(
                 if (response.isSuccessful) {
                     val body = response.body()
                     if (body != null && body.success) {
+                        Timber.d("Login Successful: ${body.data}")
                         _authUiState.value = _authUiState.value.copy(
                             state = AuthState.success(body.message),
-                            User = body.data
+                            user = body.data
                         )
                     }
                 } else {
                     val errorJson = response.errorBody()?.string()
-                    Timber.e("Error JSON: $errorJson")
+                    Timber.e("Unsuccessful Login Request: $errorJson")
                     val errorMsg = try {
                         val json = JSONObject(errorJson ?: "")
                         json.getString("message")
@@ -81,9 +86,10 @@ class AuthViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
-                Timber.e("Error: ${e.message}")
+                Timber.e("Login Failed: ${e.message}")
             }
         }
+        Timber.d("--------- Login Ended ----------")
     }
 }
 
@@ -97,5 +103,5 @@ sealed class AuthState {
 
 data class AuthUiState(
     val state: AuthState = AuthState.Idle,
-    val User: User? = null
+    val user: User? = null
 )

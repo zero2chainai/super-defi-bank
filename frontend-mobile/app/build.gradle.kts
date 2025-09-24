@@ -75,8 +75,12 @@ dependencies {
 
     // WalletConnect
     implementation(platform("com.walletconnect:android-bom:1.35.1"))
-    implementation("com.walletconnect:android-core")
-    implementation("com.walletconnect:sign")
+    implementation("com.walletconnect:android-core") {
+        exclude(group = "org.bouncycastle")
+    }
+    implementation("com.walletconnect:sign") {
+        exclude(group = "org.bouncycastle")
+    }
 
     // Hilt and Kapt
     implementation("com.google.dagger:hilt-android:2.56.2")
@@ -94,4 +98,11 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:3.0.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    // Contract function encoder
+    implementation("org.web3j:core:4.9.8") {
+        exclude(group = "org.bouncycastle")
+    }
+    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+    implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
 }
