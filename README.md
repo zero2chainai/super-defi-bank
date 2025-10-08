@@ -81,15 +81,11 @@
 - Solidity (ERC-20, NFT)  
 - Python (AI & ML)
 
----
-
 ### **Architecture & Design**
 - MVC (Backend)  
 - MVVM + Repository Pattern (Android)  
 - Component-Based Architecture (React)  
 - Smart Contract Architecture (Blockchain)
-
----
 
 ### **Libraries & Tools**
 - Hilt, Coroutines, LiveData, StateFlow, ViewModel  
@@ -97,8 +93,6 @@
 - Axios / Fetch (API Communication)  
 - TensorFlow, scikit-learn (ML)  
 - Navigation Component (Android)
-
----
 
 ### **DevOps & Other Tools**
 - Git & GitHub  
