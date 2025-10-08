@@ -1,6 +1,6 @@
 # Super DeFi Bank
 
-> A decentralized Finance (DeFi) banking platform with AI chatbot integration for web and mobile.
+> A decentralized Finance (DeFi) banking platform with AI chatbot integration for web and mobile.  
 > **Status:** Work on progress.
 
 ---
