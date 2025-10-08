@@ -1,7 +1,9 @@
 # Super DeFi Bank
 
 > A decentralized Finance (DeFi) banking platform with AI chatbot integration for web and mobile.
-> Work in progress - 10 to 13 day sprint
+> **Status:** Work on progress.
+
+---
 
 ## Table of Contents
 
@@ -16,6 +18,8 @@
 - [Installation](#installation)
 - [Contact](#contact)
 
+---
+
 ## Features
 
 - **User Authentication:** Secure registration and login with **Wallet Connect** (Web & Mobile).  
@@ -28,11 +32,15 @@
 - **Deployment:** Hosted on **Vercel**, **Render**, or other free-tier cloud platforms.  
 - **Demo Access:** Includes sample credentials and preloaded seed data for testing.
 
+---
+
 ## Quick Project Summary
 
 **Goal:** Build a working prototype (not production) deployable to an Ethereum testnet, showcasing ERC-20 token and NFT flows, an AI chatbot that understands bank-related queries, a web dashboard with charts, and a simplified mobile app.
 
 **Priority:** Technical completeness and demonstrable features (over publish).
+
+---
 
 ## Prioritized checklist
 
@@ -61,6 +69,8 @@
   - [ ] Deploy backend (Render / Railway / free-tier)
   - [ ] Provide demo mnemonic / test wallets + seed script
   - [ ] README demo steps + sample screenshots
+
+---
 
 ## Tech Stack
 
@@ -98,6 +108,8 @@
 - VS Code / Android Studio  
 - npm / yarn
 
+---
+
 ## Prerequisites
 
 - Node.js
@@ -108,6 +120,8 @@
 - Andriod Studio
 - Alchemy / Infura RPC key (optional for testnet interaction)
 
+---
+
 ## Folder Structure
 
 /backend  
@@ -117,36 +131,44 @@
 /chatbot  
 /README.md  
 
-## API Endpoints ("/api")
+---
 
-> Soon updated
+## API Endpoints
+
+> To be updated soon.
+
+---
 
 ## Screenshots & Demo
 
 ### Screenshots
 
-> Soon updated
+> To be updated soon.
 
 ### Demo
 
-> Soon updated
+> To be updated soon.
+
+---
 
 ## Installation
 
 ### Environment Variables (backend/.env)
-> Soon updated
+> To be updated soon.
 
 ### Backend (run)
-> Soon updated
+> To be updated soon.
 
 ### Web (run)
-> Soon updated
+> To be updated soon.
 
 ### Mobile (run)
-> Soon updated
+> To be updated soon.
 
 ### Chatbot (run)
-> Soon updated
+> To be updated soon.
+
+---
 
 ## Contact
 
